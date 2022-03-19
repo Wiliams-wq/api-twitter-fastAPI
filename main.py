@@ -26,7 +26,7 @@ app = FastAPI()
     summary="register a new user",
     tags=["users"]
 )
-#recibe el usuario de tipo UserRegister del body obligatoriamente
+# recibe el usuario de tipo UserRegister del body obligatoriamente
 def Signup(user: UserRegister = Body(...)):
     '''
     SignUp
@@ -40,24 +40,24 @@ def Signup(user: UserRegister = Body(...)):
         -last_name: str
         -birth_date: Optional[date]
     '''
-#abrimos el arhivo json y con r+ lo dejamos para que se pueda leer y escribir, usamos utf-8 y el nombre con
-#el que vamos a trabajar sera file
+# abrimos el arhivo json y con r+ lo dejamos para que se pueda leer y escribir, usamos utf-8 y el nombre con
+# el que vamos a trabajar sera file
     with open("users.json", "r+", encoding="utf-8") as file:
-#en results guardamos lo que se haya leido del archivo pasandolo a diccionario de python
+        # en results guardamos lo que se haya leido del archivo pasandolo a diccionario de python
         results = json.loads(file.read())
-#a la variable user_dict gurdamos el objeto user que se recibe en el body pasandolo a dicionario de python
+# a la variable user_dict gurdamos el objeto user que se recibe en el body pasandolo a dicionario de python
         user_dict = user.dict()
-#converimos el uuid a string para poder guardarlo en el diccionario
+# converimos el uuid a string para poder guardarlo en el diccionario
         user_dict["user_id"] = str(user_dict["user_id"])
-#converitmos la fecha a string para poder guardarla en el diccionario
+# converitmos la fecha a string para poder guardarla en el diccionario
         user_dict["birth_date"] = str(user_dict["birth_date"])
-#agregamos a results el diccionario user_dict
+# agregamos a results el diccionario user_dict
         results.append(user_dict)
-#no ubicamos en el lugar cero del arhivo file
+# no ubicamos en el lugar cero del arhivo file
         file.seek(0)
-#escribimos en el archivo file el diccionario results pasandolo a json con dumps
+# escribimos en el archivo file el diccionario results pasandolo a json con dumps
         file.write(json.dumps(results))
-#retornamos el usuario
+# retornamos el usuario
         return user
 
 
@@ -70,18 +70,37 @@ def Signup(user: UserRegister = Body(...)):
 )
 def login():
     pass
+
+
 # usamos list por que de todos los que obtengamos los guarde en una lista y luego retorne un json
-
-
 @app.get(
     "/users",
-    response_model=List[User],
+    response_model= List[User],
     status_code=status.HTTP_200_OK,
     summary="show all users",
     tags=["users"]
 )
-def showAllUsers(user: User):
-    pass
+def showAllUsers():
+    '''
+    Get Users
+
+    This path operation shows all users created in the app
+
+    Parameters: None
+
+    Returns a list with the basic user information of all users created in the app:
+    - user_id: UUID
+    - email: Emailstr
+    - first_name: str
+    - last_name: str
+    - birth_date: date
+
+    '''
+# se lee el archivo users.json y se guarda en results para retornarlo, hay errores por lo que se debe
+# manejar
+    with open("users.json", "r+", encoding="utf-8") as f:
+        results = json.loads(f.read())
+        return results
 
 
 @app.get(
