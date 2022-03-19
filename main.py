@@ -1,13 +1,16 @@
 # modulos propios
 from models.user import User
 from models.tweet import Tweet
+from models.userRegister import UserRegister
 
 # python
 from typing import List
+import json
+
 
 # fastAPI
 from fastapi import FastAPI
-from fastapi import status
+from fastapi import status, Body
 
 app = FastAPI()
 
@@ -23,8 +26,39 @@ app = FastAPI()
     summary="register a new user",
     tags=["users"]
 )
-def signup(user: User):
-    pass
+#recibe el usuario de tipo UserRegister del body obligatoriamente
+def Signup(user: UserRegister = Body(...)):
+    '''
+    SignUp
+     this path operation  register a user in the app
+    parameters: 
+        -Request Body paremet
+    Returns a json with de basic user information
+        -user_id: UUID
+        -email: EmailStr
+        -first_name: str
+        -last_name: str
+        -birth_date: Optional[date]
+    '''
+#abrimos el arhivo json y con r+ lo dejamos para que se pueda leer y escribir, usamos utf-8 y el nombre con
+#el que vamos a trabajar sera file
+    with open("users.json", "r+", encoding="utf-8") as file:
+#en results guardamos lo que se haya leido del archivo pasandolo a diccionario de python
+        results = json.loads(file.read())
+#a la variable user_dict gurdamos el objeto user que se recibe en el body pasandolo a dicionario de python
+        user_dict = user.dict()
+#converimos el uuid a string para poder guardarlo en el diccionario
+        user_dict["user_id"] = str(user_dict["user_id"])
+#converitmos la fecha a string para poder guardarla en el diccionario
+        user_dict["birth_date"] = str(user_dict["birth_date"])
+#agregamos a results el diccionario user_dict
+        results.append(user_dict)
+#no ubicamos en el lugar cero del arhivo file
+        file.seek(0)
+#escribimos en el archivo file el diccionario results pasandolo a json con dumps
+        file.write(json.dumps(results))
+#retornamos el usuario
+        return user
 
 
 @app.post(
@@ -95,6 +129,7 @@ def deleteAUser(user: User):
 def Home():
     return {"message": "Hello World from twitter app"}
 
+
 @app.post(
     "/post",
     response_model=Tweet,
@@ -104,6 +139,7 @@ def Home():
 )
 def PostATweet():
     return {"message": "Hello World from twitter app"}
+
 
 @app.get(
     "/tweets/{tweet_id}",
@@ -125,6 +161,7 @@ def showATweet():
 )
 def deleteATweet():
     return {"message": "Hello World from twitter app"}
+
 
 @app.put(
     "/tweets/{tweet_id}/delete",
