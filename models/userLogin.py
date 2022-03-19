@@ -1,5 +1,5 @@
 #modulos propios
-from userBase import UserBase
+from models.userBase import UserBase
 
 #pydantic
 from pydantic import Field

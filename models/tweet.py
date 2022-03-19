@@ -1,5 +1,5 @@
 #modulos propios
-from user import User
+from models.user import User
 #python
 from typing import Optional
 from uuid import UUID
