@@ -8,7 +8,3 @@ from pydantic import BaseModel, EmailStr, Field
 class UserBase(BaseModel):
     user_id: UUID = Field(..., alias="id")
     email: EmailStr = Field(..., alias="email")
-
-    
-    
-    

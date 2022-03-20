@@ -75,27 +75,13 @@ def login():
 # usamos list por que de todos los que obtengamos los guarde en una lista y luego retorne un json
 @app.get(
     "/users",
-    response_model= List[User],
+    response_model=List[User],
     status_code=status.HTTP_200_OK,
     summary="show all users",
     tags=["users"]
 )
 def showAllUsers():
-    '''
-    Get Users
 
-    This path operation shows all users created in the app
-
-    Parameters: None
-
-    Returns a list with the basic user information of all users created in the app:
-    - user_id: UUID
-    - email: Emailstr
-    - first_name: str
-    - last_name: str
-    - birth_date: date
-
-    '''
 # se lee el archivo users.json y se guarda en results para retornarlo, hay errores por lo que se debe
 # manejar
     with open("users.json", "r+", encoding="utf-8") as f:
@@ -121,7 +107,7 @@ def showAUser():
     summary="update a user",
     tags=["users"]
 )
-def updateAUser(user: User):
+def updateAUser():
     pass
 
 
@@ -132,7 +118,7 @@ def updateAUser(user: User):
     summary="delete a user",
     tags=["users"]
 )
-def deleteAUser(user: User):
+def deleteAUser():
     pass
 
 
