@@ -1,10 +1,26 @@
 [
   {
     "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "email": "wiliams@gmail.com",
-    "password": "123124",
-    "first_name": "abc",
-    "last_name": "dfg",
-    "birth_date": "2022-03-19"
+    "email": "wiliams@example.com",
+    "password": "123456789",
+    "first_name": "Wiliams",
+    "last_name": "ixcoy",
+    "birth_date": "2022-03-20"
+  },
+  {
+    "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "email": "wiliams@example.com",
+    "password": "123456789",
+    "first_name": "alexander",
+    "last_name": "tzoc",
+    "birth_date": "2022-03-20"
+  },
+  {
+    "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "email": "wiliams@example.com",
+    "password": "123456789",
+    "first_name": "Carlos",
+    "last_name": "lopez",
+    "birth_date": "2022-03-20"
   }
 ]

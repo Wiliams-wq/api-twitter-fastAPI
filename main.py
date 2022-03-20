@@ -31,7 +31,7 @@ def Signup(user: UserRegister = Body(...)):
     '''
     SignUp
      this path operation  register a user in the app
-    parameters: 
+    parameters:
         -Request Body paremet
     Returns a json with de basic user information
         -user_id: UUID
@@ -132,7 +132,21 @@ def deleteAUser():
     tags=["tweets"]
 )
 def Home():
-    return {"message": "Hello World from twitter app"}
+    """
+            This path operation shows all users in the app
+            Parameters:
+                -
+            Returns a json list with all users in the app, with the following keys:
+                - tweet_id: UUID
+                - content: str
+                - created_at: datetime
+                - updated_at: datetime
+                - by: User
+    """
+    with open("tweets.json", "r+", encoding="utf-8") as f:
+        results = json.loads(f.read())
+        return results
+    
 
 
 @app.post(
@@ -142,7 +156,7 @@ def Home():
     summary="post a new tweet",
     tags=["tweets"]
 )
-def PostATweet(tweet: Tweet = Body(...)): 
+def PostATweet(tweet: Tweet = Body(...)):
     """
 This path operation post a new tweet in the app
 
@@ -163,13 +177,13 @@ Returns a json with the basic information of the tweet
     with open("tweets.json", "r+", encoding="utf-8") as f:
         results = json.loads(f.read())
         tweet_dict = tweet.dict()
-        #se castea todos los datos que no sean json
+        # se castea todos los datos que no sean json
         tweet_dict["tweet_id"] = str(tweet_dict["tweet_id"])
         tweet_dict["created_at"] = str(tweet_dict["created_at"])
         tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
-        #como el usuario tiene datos del usuario, entonces se castea los datos del usuario
-        #como su uuid y el año de nacimiento.
-        #esto esta en el json by y luego user_id
+        # como el usuario tiene datos del usuario, entonces se castea los datos del usuario
+        # como su uuid y el año de nacimiento.
+        # esto esta en el json by y luego user_id
         tweet_dict["by"]["user_id"] = str(tweet_dict["by"]["user_id"])
         tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
 
