@@ -82,8 +82,8 @@ def login():
 )
 def showAllUsers():
 
-# se lee el archivo users.json y se guarda en results para retornarlo, hay errores por lo que se debe
-# manejar
+    # se lee el archivo users.json y se guarda en results para retornarlo, hay errores por lo que se debe
+    # manejar
     with open("users.json", "r+", encoding="utf-8") as f:
         results = json.loads(f.read())
         return results
@@ -142,8 +142,41 @@ def Home():
     summary="post a new tweet",
     tags=["tweets"]
 )
-def PostATweet():
-    return {"message": "Hello World from twitter app"}
+def PostATweet(tweet: Tweet = Body(...)): 
+    """
+This path operation post a new tweet in the app
+
+Parameters: 
+    -REquest Body
+        -tweet: Tweet
+
+Returns a json with the basic information of the tweet
+    - tweet_id: UUID
+    - constent: str
+    - created_at: datetime
+    - updated_at: datetime(optional)
+    -by: User
+
+
+"""
+
+    with open("tweets.json", "r+", encoding="utf-8") as f:
+        results = json.loads(f.read())
+        tweet_dict = tweet.dict()
+        #se castea todos los datos que no sean json
+        tweet_dict["tweet_id"] = str(tweet_dict["tweet_id"])
+        tweet_dict["created_at"] = str(tweet_dict["created_at"])
+        tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
+        #como el usuario tiene datos del usuario, entonces se castea los datos del usuario
+        #como su uuid y el año de nacimiento.
+        #esto esta en el json by y luego user_id
+        tweet_dict["by"]["user_id"] = str(tweet_dict["by"]["user_id"])
+        tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
+
+        results.append(tweet_dict)
+        f.seek(0)
+        f.write(json.dumps(results))
+        return tweet
 
 
 @app.get(
